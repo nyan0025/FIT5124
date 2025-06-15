@@ -126,6 +126,99 @@ class My_Shadow_model(nn.Module):
 
         return F.log_softmax(x, dim=1)
 
+# class My_Shadow_model_VerySimple_Unknown(nn.Module):
+#     def __init__(self):
+#         super(My_Shadow_model_VerySimple_Unknown, self).__init__()
+#         self.conv = nn.Conv2d(3, 8, 5, stride=1, padding=2)               #Simple + Unknown
+#         self.fc = nn.Linear(8 * 16 * 16, 10)
+
+#     def forward(self, x):
+#         x = F.relu(self.conv(x))
+#         x = F.max_pool2d(x, 2)  # 32 -> 16
+#         x = torch.flatten(x, 1)
+#         x = self.fc(x)
+#         return F.log_softmax(x, dim=1)
+
+
+# class My_Shadow_model_Complex_Unknown(nn.Module):
+#     def __init__(self):
+#         super(My_Shadow_model_Complex, self).__init__()
+#         self.conv1 = nn.Conv2d(3, 32, 3, padding=1)
+#         self.conv2 = nn.Conv2d(32, 64, 3, padding=1)
+#         self.conv3 = nn.Conv2d(64, 128, 3, padding=1)                     #Complex + Unknown
+#         self.conv4 = nn.Conv2d(128, 128, 3, padding=1)
+
+#         self.fc1 = nn.Linear(128 * 4 * 4, 512)
+#         self.fc2 = nn.Linear(512, 256)
+#         self.fc3 = nn.Linear(256, 128)
+#         self.fc4 = nn.Linear(128, 10)
+
+#     def forward(self, x):
+#         x = F.relu(self.conv1(x))     # [32x32]
+#         x = F.max_pool2d(x, 2)        # [16x16]
+#         x = F.relu(self.conv2(x))
+#         x = F.max_pool2d(x, 2)        # [8x8]
+#         x = F.relu(self.conv3(x))
+#         x = F.max_pool2d(x, 2)        # [4x4]
+#         x = F.relu(self.conv4(x))     # [4x4]
+#         x = torch.flatten(x, 1)       # 128*4*4 = 2048
+#         x = F.relu(self.fc1(x))
+#         x = F.relu(self.fc2(x))
+#         x = F.relu(self.fc3(x))
+#         x = self.fc4(x)
+#         return F.log_softmax(x, dim=1)
+
+# class Lenet_Simple(nn.Module):
+#     def __init__(self):
+#         super(Lenet_Simple, self).__init__()
+#         self.conv1 = nn.Conv2d(3, 8, 3, stride=1, padding=1)
+#         self.conv2 = nn.Conv2d(8, 16, 3, stride=1, padding=1)             #Simple + Known
+
+#         self.fc1 = nn.Linear(16 * 8 * 8, 128)  # [B,16,8,8] -> flatten -> 1024
+#         self.fc2 = nn.Linear(128, 10)
+
+#     def forward(self, x):
+#         x = F.relu(self.conv1(x))        # -> [8,32,32]
+#         x = F.max_pool2d(x, 2)           # -> [8,16,16]
+#         x = F.relu(self.conv2(x))        # -> [16,16,16]
+#         x = F.max_pool2d(x, 2)           # -> [16,8,8]
+
+#         x = torch.flatten(x, 1)          # -> [B,1024]
+#         x = F.relu(self.fc1(x))
+#         x = self.fc2(x)
+#         return F.log_softmax(x, dim=1)
+
+# class Lenet_Complex(nn.Module):
+#     def __init__(self):
+#         super(Lenet_Complex, self).__init__()
+#         self.conv1 = nn.Conv2d(3, 32, 3, stride=1, padding=1)
+#         self.conv2 = nn.Conv2d(32, 64, 3, stride=1, padding=1)
+#         self.conv3 = nn.Conv2d(64, 128, 3, stride=1, padding=1)
+#         self.conv4 = nn.Conv2d(128, 128, 3, stride=1, padding=1)          #Complex + Known
+
+#         self.fc1 = nn.Linear(128 * 4 * 4, 512)
+#         self.fc2 = nn.Linear(512, 256)
+#         self.fc3 = nn.Linear(256, 128)
+#         self.fc4 = nn.Linear(128, 64)
+#         self.fc5 = nn.Linear(64, 10)
+
+#     def forward(self, x):
+#         x = F.relu(self.conv1(x))       # -> [32,32,32]
+#         x = F.max_pool2d(x, 2)          # -> [32,16,16]
+#         x = F.relu(self.conv2(x))       # -> [64,16,16]
+#         x = F.max_pool2d(x, 2)          # -> [64,8,8]
+#         x = F.relu(self.conv3(x))       # -> [128,8,8]
+#         x = F.max_pool2d(x, 2)          # -> [128,4,4]
+#         x = F.relu(self.conv4(x))       # -> [128,4,4]
+
+#         x = torch.flatten(x, 1)         # -> [2048]
+#         x = F.relu(self.fc1(x))
+#         x = F.relu(self.fc2(x))
+#         x = F.relu(self.fc3(x))
+#         x = F.relu(self.fc4(x))
+#         x = self.fc5(x)
+#         return F.log_softmax(x, dim=1)
+
 
 # ========== Attack Model Definition (Binary Classifier for Membership) ==========
 class AttackModel(nn.Module):
